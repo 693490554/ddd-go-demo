@@ -2,7 +2,9 @@
 
 package services
 
-import "ddd-go-demo/domain/assets/repo"
+import (
+	"ddd-go-demo/domain/assets/aggregate"
+)
 
 var CoinSvc *coinService
 
@@ -12,11 +14,10 @@ type coinService struct {
 
 // AddUserCoin 增加用户金币数量
 func (s *coinService) AddUserCoin(userId uint64, cnt int64, remark string) error {
-	agg, err := repo.CoinRepo.GetChangeCoinAgg(userId)
+	agg, err := aggregate.MChangeCoinAgg.Get(userId)
 	if err != nil {
 		return err
 	}
-
 	agg.AddCoin(cnt, remark)
-	return repo.CoinRepo.SaveChangeCoinAgg(agg)
+	return agg.Save()
 }

@@ -7,7 +7,10 @@ import (
 	json "github.com/json-iterator/go"
 )
 
+var MPrizeRecord *PrizeRecord
+
 // PrizeRecord 用户实物奖品信息
+// todo 充血模型
 type PrizeRecord struct {
 	Id          uint64
 	UserId      uint64
@@ -44,6 +47,14 @@ func (r *PrizeRecord) GetReceiveInfo() (*vo.ReceiveInfo, error) {
 	return ret, nil
 }
 
+func (r *PrizeRecord) Save() error {
+	return prizeRepo.Save(r)
+}
+
+func (r *PrizeRecord) SaveWithTx() error {
+	return prizeRepo.SaveWithTx(r)
+}
+
 func NewPrizeRecord(userId uint64, prizeId uint32) *PrizeRecord {
 	return &PrizeRecord{
 		UserId:     userId,
@@ -52,4 +63,28 @@ func NewPrizeRecord(userId uint64, prizeId uint32) *PrizeRecord {
 		CreateTime: time.Now().Unix(),
 		UpdateTime: time.Now().Unix(),
 	}
+}
+
+var prizeRepo *prizeRepository
+
+// prizeRepository 奖品仓储层
+type prizeRepository struct {
+}
+
+// Get 获取奖品对象
+func (c *prizeRepository) Get(userId uint64, prizeId uint32) (*PrizeRecord, error) {
+	// 实际业务中，此处应该是从db中获取记录
+	return NewPrizeRecord(userId, prizeId), nil
+}
+
+// Save 保存奖品对象
+func (c *prizeRepository) Save(record *PrizeRecord) error {
+	// 实际业务中，此处应该是将记录保存至db
+	return nil
+}
+
+// SaveWithTx 开启事务保存
+func (c *prizeRepository) SaveWithTx(*PrizeRecord) error {
+	// 实际业务中，此处应该是将记录保存至db
+	return nil
 }

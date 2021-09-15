@@ -1,8 +1,13 @@
 package entity
 
-import "time"
+import (
+	"time"
+)
+
+var MCoinRecord *CoinRecord
 
 // CoinRecord 用户金币记录
+// todo 充血模型
 type CoinRecord struct {
 	Id         uint64
 	UserId     uint64
@@ -19,6 +24,18 @@ func (c *CoinRecord) AddCoin(cnt int64) {
 func (c *CoinRecord) ReduceCoin(cnt int64) {
 	c.UpdateTime = time.Now().Unix()
 	c.Cnt -= uint64(cnt)
+}
+
+func (c *CoinRecord) Get(userId uint64) (*CoinRecord, error) {
+	return coinRepo.Get(userId)
+}
+
+func (c *CoinRecord) Save() error {
+	return coinRepo.Save(c)
+}
+
+func (c *CoinRecord) SaveWithTx() error {
+	return coinRepo.SaveWithTx(c)
 }
 
 func NewCoinRecord(userId uint64) *CoinRecord {
@@ -45,4 +62,28 @@ func NewCoinHistoryRecord(userId uint64, cnt int64, remark string) *CoinHistoryR
 		Remark:     remark,
 		CreateTime: time.Now().Unix(),
 	}
+}
+
+var coinRepo *coinRepository
+
+// coinRepository 金币仓储层
+type coinRepository struct {
+}
+
+// Get 获取金币对象
+func (c *coinRepository) Get(userId uint64) (*CoinRecord, error) {
+	// 实际业务中，此处应该是从db中获取记录
+	return NewCoinRecord(userId), nil
+}
+
+// Save 保存金币对象
+func (c *coinRepository) Save(*CoinRecord) error {
+	// 实际业务中，此处应该是将记录保存至db
+	return nil
+}
+
+// SaveWithTx 开启事务保存
+func (c *coinRepository) SaveWithTx(*CoinRecord) error {
+	// 实际业务中，此处应该是将记录保存至db
+	return nil
 }
