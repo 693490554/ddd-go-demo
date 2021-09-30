@@ -54,7 +54,7 @@
 
 抽奖业务流程图
 ==
-![image]()
+![image](https://github.com/693490554/ddd-go-demo/raw/master/bizPorcess.png)
 
 业务领域设计介绍
 == 
@@ -66,7 +66,7 @@
 
 层级调用关系图
 == 
-
+![image](https://github.com/693490554/ddd-go-demo/raw/master/callRelation.jpg)
 
 
 更多DDD相关知识
